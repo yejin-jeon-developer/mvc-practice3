@@ -1,6 +1,7 @@
 package org.example.mvc;
 
 import org.example.mvc.controller.Controller;
+import org.example.mvc.controller.RequestMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +30,12 @@ public class DispatcherServlet extends HttpServlet {
         log.info("DispatcherServlet service started.");
 
         try {
-            Controller handler = requestMappingHandlerMapping.findHandler(request.getRequestURI());
+            Controller handler = requestMappingHandlerMapping.findHandler(new HandlerKey(RequestMethod.valueOf(request.getMethod()), request.getRequestURI()));
             String viewName = handler.handleRequest(request, response);
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewName);
-            requestDispatcher.forward(request, response);
+
+            // redirect , forward 모두 되어야함... ViewResolver 필요
+
+
 
         } catch (Exception e) {
             log.error("exception occur [{}]", e.getMessage(), e);
